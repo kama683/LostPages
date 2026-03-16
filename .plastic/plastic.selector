@@ -1,0 +1,4 @@
+repository "LostPages/LostPages@20067537181081@cloud"
+  path "/"
+    br "/main"
+    co "/main"
