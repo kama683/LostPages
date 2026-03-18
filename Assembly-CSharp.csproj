@@ -50,19 +50,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\LostPage.cs" />
-    <Compile Include="Assets\Scripts\InkEnemy.cs" />
-    <Compile Include="Assets\Scripts\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\BridgeAppear.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\HUDController.cs" />
-    <Compile Include="Assets\Scripts\GrowTarget.cs" />
-    <Compile Include="Assets\Scripts\StartButtonSound.cs" />
-    <Compile Include="Assets\Scripts\HintTrigger.cs" />
-    <Compile Include="Assets\Scripts\ButtonHoverScale.cs" />
+    <Compile Include="Assets\Scripts\FloatingEffect.cs" />
     <Compile Include="Assets\Scripts\WordSystem.cs" />
+    <Compile Include="Assets\Scripts\LevelCompleteUI.cs" />
+    <Compile Include="Assets\Scripts\MainMenuScripts\ButtonHoverScale.cs" />
     <Compile Include="Assets\Scripts\WordPickup.cs" />
-    <Compile Include="Assets\Scripts\MainMenuController.cs" />
-    <Compile Include="Assets\Scripts\CameraFollow.cs" />
-    <Compile Include="Assets\Scripts\MenuFloat.cs" />
+    <Compile Include="Assets\Scripts\MainMenuScripts\MainMenuController.cs" />
+    <Compile Include="Assets\Scripts\MainMenuScripts\MenuFloat.cs" />
+    <Compile Include="Assets\Scripts\BridgeMagicEffect.cs" />
+    <Compile Include="Assets\Scripts\BridgeLifetime.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -1,44 +1,49 @@
 using UnityEngine;
-using TMPro;
 
-// ============================================================
-//  LOST PAGES — WordPickup.cs
-//  Прикрепи на объект-слово (платформа с текстом).
-//  Требует: BoxCollider2D (Is Trigger = true)
-// ============================================================
 public class WordPickup : MonoBehaviour
 {
-    [Header("Слово для выдачи игроку")]
-    public string word = "МОСТ";   // или BRIDGE, РОСТ, GROW и т.д.
+    public string wordName = "BRIDGE";
+    public GameObject pressEText;
 
-    WordSystem ws;
-    bool collected = false;
+    private bool playerInside = false;
 
-    // Для покачивания
-    Vector3 startPos;
-    float bobSpeed = 1.8f;
-    float bobHeight = 0.12f;
-
-    void Start()
+    private void Start()
     {
-        ws = FindObjectOfType<WordSystem>();
-        startPos = transform.position;
+        if (pressEText != null)
+            pressEText.SetActive(false);
     }
 
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collected)
-            transform.position = startPos + Vector3.up *
-                Mathf.Sin(Time.time * bobSpeed) * bobHeight;
+        if (collision.CompareTag("Player"))
+        {
+            playerInside = true;
+
+            if (pressEText != null)
+                pressEText.SetActive(true);
+        }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collected) return;
-        if (!other.CompareTag("Player")) return;
+        if (collision.CompareTag("Player"))
+        {
+            playerInside = false;
 
-        collected = true;
-        ws.PickupWord(word);
-        gameObject.SetActive(false); // скрываем, не уничтожаем (для рестарта)
+            if (pressEText != null)
+                pressEText.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (playerInside && Input.GetKeyDown(KeyCode.E))
+        {
+            if (pressEText != null)
+                pressEText.SetActive(false);
+
+            WordSystem.Instance.PickupWord(wordName);
+            gameObject.SetActive(false);
+        }
     }
 }

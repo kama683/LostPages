@@ -1,40 +1,58 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-// ============================================================
-//  LOST PAGES — LostPage.cs
-//  Прикрепи на объект страницы.
-//  Требует: BoxCollider2D (Is Trigger = true)
-// ============================================================
 public class LostPage : MonoBehaviour
 {
-    public string nextSceneName = "Level_2"; // или "MainMenu"
+    public string nextSceneName = "Level_2";
+    public float delayBeforeLoad = 5f;
 
-    Vector3 startPos;
-    float bobSpeed = 1.2f;
+    private bool collected = false;
 
-    void Start() { startPos = transform.position; }
-
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        transform.position = startPos + Vector3.up *
-            Mathf.Sin(Time.time * bobSpeed) * 0.18f;
-        transform.Rotate(0, 0, 20f * Time.deltaTime);
+        if (collected) return;
+
+        if (collision.CompareTag("Player"))
+        {
+            collected = true;
+
+            PlayerController playerController = collision.GetComponent<PlayerController>();
+            if (playerController != null)
+                playerController.enabled = false;
+
+            Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.bodyType = RigidbodyType2D.Static;
+            }
+
+            if (WordSystem.Instance != null)
+            {
+                WordSystem.Instance.ShowTemporaryHint("История восстановлена", 2f);
+            }
+
+            if (LevelCompleteUI.Instance != null)
+            {
+                LevelCompleteUI.Instance.ShowRestorePanel();
+            }
+
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            if (sr != null)
+                sr.enabled = false;
+
+            Collider2D col = GetComponent<Collider2D>();
+            if (col != null)
+                col.enabled = false;
+
+            StartCoroutine(LoadNextScene());
+        }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private IEnumerator LoadNextScene()
     {
-        if (!other.CompareTag("Player")) return;
-        AudioManager.Play("page");
-        HUDController.ShowToast("История начинает восстанавливаться…",
-                                new Color(0.23f, 0.14f, 0f));
-
-        // Загрузить следующую сцену через 2 секунды
-        Invoke(nameof(LoadNext), 2f);
-        gameObject.SetActive(false);
-    }
-
-    void LoadNext()
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
+        yield return new WaitForSeconds(delayBeforeLoad);
+        SceneManager.LoadScene(nextSceneName);
     }
 }

@@ -1,130 +1,103 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
-// ============================================================
-//  LOST PAGES — WordSystem.cs
-//  Прикрепи на пустой объект "WordSystem" в сцене.
-//  Управляет: собранными словами, выбором (Q), применением (ЛКМ).
-// ============================================================
 public class WordSystem : MonoBehaviour
 {
-    [Header("Bridge Settings")]
-    public GameObject bridgePrefab;       // префаб платформы-моста
-    public float      bridgeDuration = 8f; // секунд до исчезновения
+    public static WordSystem Instance;
 
-    [Header("UI")]
-    public HUDController hud;
+    public TextMeshProUGUI hintText;
+    public TextMeshProUGUI currentWordText;
 
-    // ---- приватное ----
-    List<string> collectedWords = new List<string>();
-    int          selectedIndex  = 0;
+    public GameObject bridgePrefab;
+    public Transform bridgeContainer;
+    public LayerMask bridgeLayer;
 
-    Camera cam;
+    private string currentWord = "";
+    private Camera mainCam;
 
-    void Start()
+    private void Awake()
     {
-        cam = Camera.main;
+        Instance = this;
     }
 
-    void Update()
+    private void Start()
     {
-        if (collectedWords.Count == 0) return;
+        mainCam = Camera.main;
 
-        // Q — сменить слово
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            selectedIndex = (selectedIndex + 1) % collectedWords.Count;
-            hud.UpdateWordDisplay(SelectedWord());
-            AudioManager.Play("cycle");
-        }
+        if (hintText != null)
+            hintText.text = "";
 
-        // ЛКМ — применить слово в точку клика
-        if (Input.GetMouseButtonDown(0))
-        {
-            ApplyWord(SelectedWord());
-        }
+        if (currentWordText != null)
+            currentWordText.text = "";
     }
 
-    // ---- подобрать слово ----
-    public void PickupWord(string word)
+    private void Update()
     {
-        if (!collectedWords.Contains(word))
+        if (currentWord == "BRIDGE" && Input.GetMouseButtonDown(0))
         {
-            collectedWords.Add(word);
-            selectedIndex = collectedWords.Count - 1;
-            AudioManager.Play("pickup");
-            hud.UpdateWordDisplay(word);
-            HUDController.ShowToast("Слово получено: " + word, new Color(0.23f,0.49f,0.26f));
+            TryPlaceBridge();
         }
     }
 
-    // ---- применить слово ----
-    void ApplyWord(string word)
+    public void PickupWord(string wordName)
     {
-        if (string.IsNullOrEmpty(word)) return;
+        currentWord = wordName;
 
-        Vector3 worldPos = cam.ScreenToWorldPoint(Input.mousePosition);
-        worldPos.z = 0;
+        if (currentWordText != null)
+            currentWordText.text = "[ " + currentWord + " ]";
 
-        switch (word)
+        if (hintText != null)
         {
-            case "МОСТ":
-            case "BRIDGE":
-                SpawnBridge(worldPos);
-                break;
-
-            case "РОСТ":
-            case "GROW":
-                TryGrow(worldPos);
-                break;
+            hintText.text = "Слово " + currentWord + " подобрано! Кликни по пропасти";
+            StartCoroutine(HideHintAfterSeconds(3f));
         }
     }
-
-    // ---- МОСТ ----
-    void SpawnBridge(Vector3 pos)
+    public void ShowTemporaryHint(string message, float duration)
 {
-    if (bridgePrefab == null) return;
-
-    GameObject bridge = Instantiate(
-        bridgePrefab,
-        pos,
-        Quaternion.identity
-    );
-
-    AudioManager.Play("bridge");
-    HUDController.ShowToast("МОСТ создан!", new Color(0.55f, 0.37f, 0.24f));
-
-    Destroy(bridge, bridgeDuration);
+    if (hintText != null)
+    {
+        hintText.text = message;
+        StartCoroutine(HideHintAfterSeconds(duration));
+    }
 }
 
-    // ---- РОСТ (Уровень 2, но уже подготовлен) ----
-    void TryGrow(Vector3 pos)
+    private void TryPlaceBridge()
     {
-        // ищем ближайшее растение
-        GrowTarget[] targets = FindObjectsByType<GrowTarget>(FindObjectsSortMode.None);
-        GrowTarget   nearest = null;
-        float        minDist = 4f; // радиус действия в юнитах
+        Vector3 mouseWorldPos = mainCam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 point = new Vector2(mouseWorldPos.x, mouseWorldPos.y);
 
-        foreach (var t in targets)
-        {
-            float d = Vector2.Distance(t.transform.position, pos);
-            if (d < minDist) { minDist = d; nearest = t; }
-        }
+        Collider2D hit = Physics2D.OverlapPoint(point, bridgeLayer);
 
-        if (nearest != null)
+        if (hit != null)
         {
-            nearest.Grow();
-            AudioManager.Play("grow");
-            HUDController.ShowToast("РОСТ!", new Color(0.23f,0.49f,0.26f));
-        }
-        else
-        {
-            AudioManager.Play("deny");
-            HUDController.ShowToast("Здесь нет растений…", Color.gray);
+            Vector3 spawnPos = new Vector3(
+                hit.bounds.center.x,
+                hit.bounds.center.y,
+                0f
+            );
+
+            Instantiate(
+                bridgePrefab,
+                spawnPos,
+                Quaternion.identity,
+                bridgeContainer
+            );
+
+            currentWord = "";
+
+            if (currentWordText != null)
+                currentWordText.text = "";
         }
     }
+    
 
-    string SelectedWord() =>
-        collectedWords.Count > 0 ? collectedWords[selectedIndex] : "";
+
+    private IEnumerator HideHintAfterSeconds(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (hintText != null)
+            hintText.text = "";
+    }
 }
