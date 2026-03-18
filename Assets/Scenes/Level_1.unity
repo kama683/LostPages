@@ -272,7 +272,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -852,7 +852,6 @@ GameObject:
   - component: {fileID: 1527139736}
   - component: {fileID: 1527139735}
   - component: {fileID: 1527139734}
-  - component: {fileID: 1527139733}
   m_Layer: 0
   m_Name: WordPickup_Bridge
   m_TagString: Untagged
@@ -860,19 +859,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1527139733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1527139732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fa7dd98baf94a043acc1a6b345154f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WordPickup
-  word: "\u041C\u041E\u0421\u0422"
 --- !u!61 &1527139734
 BoxCollider2D:
   m_ObjectHideFlags: 0

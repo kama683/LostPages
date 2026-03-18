@@ -83,17 +83,20 @@ public class WordSystem : MonoBehaviour
 
     // ---- МОСТ ----
     void SpawnBridge(Vector3 pos)
-    {
-        // Мост создаётся горизонтально в точке клика
-        GameObject bridge = Instantiate(bridgePrefab,
-            new Vector3(pos.x, pos.y, 0), Quaternion.identity);
+{
+    if (bridgePrefab == null) return;
 
-        AudioManager.Play("bridge");
-        HUDController.ShowToast("МОСТ создан!", new Color(0.55f, 0.37f, 0.24f));
+    GameObject bridge = Instantiate(
+        bridgePrefab,
+        pos,
+        Quaternion.identity
+    );
 
-        // Уничтожить через bridgeDuration секунд
-        Destroy(bridge, bridgeDuration);
-    }
+    AudioManager.Play("bridge");
+    HUDController.ShowToast("МОСТ создан!", new Color(0.55f, 0.37f, 0.24f));
+
+    Destroy(bridge, bridgeDuration);
+}
 
     // ---- РОСТ (Уровень 2, но уже подготовлен) ----
     void TryGrow(Vector3 pos)

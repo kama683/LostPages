@@ -49,14 +49,19 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.5f2\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\LostPage.cs" />
+    <Compile Include="Assets\Scripts\InkEnemy.cs" />
+    <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\HUDController.cs" />
+    <Compile Include="Assets\Scripts\GrowTarget.cs" />
     <Compile Include="Assets\Scripts\StartButtonSound.cs" />
+    <Compile Include="Assets\Scripts\HintTrigger.cs" />
     <Compile Include="Assets\Scripts\ButtonHoverScale.cs" />
     <Compile Include="Assets\Scripts\WordSystem.cs" />
-    <Compile Include="Assets\Scripts\BridgePlatform.cs" />
-    <Compile Include="Assets\Scripts\Systems.cs" />
-    <Compile Include="Assets\Scripts\GameObjects.cs" />
+    <Compile Include="Assets\Scripts\WordPickup.cs" />
     <Compile Include="Assets\Scripts\MainMenuController.cs" />
+    <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\MenuFloat.cs" />
   </ItemGroup>
   <ItemGroup>
