@@ -7,14 +7,14 @@ public class PagesManager : MonoBehaviour
     public Image[] pieces;
 
     private Color openColor = Color.white;
-    private Color lockedColor = new Color(0.2f, 0.2f, 0.2f, 0.15f);
+    private Color lockedColor = new Color(0.2f, 0.2f, 0.2f, 0.2f);
 
     private void Start()
     {
 
-        PlayerPrefs.DeleteKey("UnlockedClosedPieces");
-        PlayerPrefs.DeleteKey("NextLevel");
-        PlayerPrefs.Save();//вот эти трое чтобы сбросить прогресс игры
+        // PlayerPrefs.DeleteKey("UnlockedClosedPieces");
+        // PlayerPrefs.DeleteKey("NextLevel");
+        // PlayerPrefs.Save();//вот эти трое чтобы сбросить прогресс
 
         // сколько уже дополнительно открыто после прохождения уровней
         int unlockedClosedPieces = PlayerPrefs.GetInt("UnlockedClosedPieces", 0);
