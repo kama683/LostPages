@@ -60,6 +60,7 @@
     <Compile Include="Assets\Scripts\MainMenuScripts\MainMenuController.cs" />
     <Compile Include="Assets\Scripts\MainMenuScripts\MenuFloat.cs" />
     <Compile Include="Assets\Scripts\BridgeMagicEffect.cs" />
+    <Compile Include="Assets\Scripts\PagesManager.cs" />
     <Compile Include="Assets\Scripts\BridgeLifetime.cs" />
   </ItemGroup>
   <ItemGroup>

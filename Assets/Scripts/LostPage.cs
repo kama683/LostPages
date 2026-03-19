@@ -4,8 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class LostPage : MonoBehaviour
 {
-    public string nextSceneName = "Level_2";
-    public float delayBeforeLoad = 5f;
+    public string nextSceneName = "Pages";
+    public string nextLevelAfterPages = "Level_2";
+    public float delayBeforeLoad = 4f;
 
     private bool collected = false;
 
@@ -37,6 +38,15 @@ public class LostPage : MonoBehaviour
             {
                 LevelCompleteUI.Instance.ShowRestorePanel();
             }
+
+            // открываем ещё один закрытый кусок
+            int unlockedClosedPieces = PlayerPrefs.GetInt("UnlockedClosedPieces", 0);
+            unlockedClosedPieces = Mathf.Clamp(unlockedClosedPieces + 1, 0, 3);
+            PlayerPrefs.SetInt("UnlockedClosedPieces", unlockedClosedPieces);
+
+            // запоминаем, какой уровень запускать дальше из Pages
+            PlayerPrefs.SetString("NextLevel", nextLevelAfterPages);
+            PlayerPrefs.Save();
 
             SpriteRenderer sr = GetComponent<SpriteRenderer>();
             if (sr != null)

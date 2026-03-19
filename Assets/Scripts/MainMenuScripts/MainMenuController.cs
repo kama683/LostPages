@@ -5,7 +5,7 @@ using System.Collections;
 public class MainMenuController : MonoBehaviour
 {
     [Header("Scene")]
-    public string firstLevelName = "Level_1";
+    public string firstLevelName = "Pages";
     public float startDelay = 0.35f;
 
     [Header("Audio")]

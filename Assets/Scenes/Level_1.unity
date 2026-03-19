@@ -1732,7 +1732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7327302dc8849e468809dd39702deee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LostPage
-  nextSceneName: Level_2
+  nextSceneName: Pages
   delayBeforeLoad: 2.5
 --- !u!114 &1174002214
 MonoBehaviour:
