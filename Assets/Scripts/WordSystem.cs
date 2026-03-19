@@ -40,7 +40,7 @@ public class WordSystem : MonoBehaviour
         }
     }
 
-    public void PickupWord(string wordName)
+   public void PickupWord(string wordName)
     {
         currentWord = wordName;
 
@@ -49,9 +49,13 @@ public class WordSystem : MonoBehaviour
 
         if (hintText != null)
         {
-            hintText.text = "Слово " + currentWord + " подобрано! Кликни по пропасти";
+            // Заодно я немного изменил текст подсказки, чтобы он напоминал про правую кнопку!
+            hintText.text = "Слово " + currentWord + " подобрано! Кликни ПРАВОЙ кнопкой мыши.";
             StartCoroutine(HideHintAfterSeconds(3f));
         }
+
+        // --- САМОЕ ГЛАВНОЕ: Ищем BridgeBuilder и включаем галочку! ---
+        FindAnyObjectByType<BridgeBuilder>().PickUpWord();
     }
     public void ShowTemporaryHint(string message, float duration)
 {
