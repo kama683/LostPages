@@ -761,7 +761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e5620a058cb7da43b5cb2f99a181310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
-  firstLevelName: Pages
+  firstLevelName: Cutscene
   startDelay: 0.5
   audioSource: {fileID: 1634287174}
   startClickClip: {fileID: 8300000, guid: 5ba620c8e2bfc7943bda4b783ec39c05, type: 3}
